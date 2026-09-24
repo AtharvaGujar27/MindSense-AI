@@ -1,15 +1,15 @@
 # MindSense AI
 
-MindSense AI is a web application that uses natural language processing to classify text with a trained machine learning model. Enter a short piece of text to see the model’s predicted category and confidence score.
+MindSense AI is a web application that uses natural language processing to classify text with a trained machine learning model. Enter a short piece of text to see the predicted category and the model’s confidence score.
 
-> **Disclaimer:** This project is for educational purposes only. It is not a mental health diagnostic tool and should not replace advice from a qualified professional.
+> **Disclaimer:** This project is for educational purposes only. It is not a mental health diagnostic tool and should not replace guidance from a qualified professional.
 
 ## Features
 
 - Classifies text using a trained Logistic Regression model
-- Converts text to TF-IDF features before prediction
-- Displays the predicted category and model confidence
-- Provides a responsive interface with light and dark themes
+- Converts text into TF-IDF features
+- Displays the predicted category and model confidence score
+- Includes a responsive interface with light and dark themes
 
 ## Built With
 
@@ -23,12 +23,21 @@ MindSense AI is a web application that uses natural language processing to class
 
 ### Requirements
 
-Install Python, then open a terminal in the project folder.
+Install Python and open a terminal in the project folder.
 
 ### Installation
 
 ```bash
 pip install -r requirements.txt
+```
+
+### Run the App
+
+```bash
+python app.py
+```
+
+Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
 ## How It Works
 
@@ -37,6 +46,22 @@ pip install -r requirements.txt
 3. The trained model predicts a category.
 4. The app displays the prediction and its confidence score.
 
-The confidence score reflects the model’s output; it is not a clinical measure or diagnosis.
+The confidence score reflects the model’s output. It is not a clinical measure or diagnosis.
 
+## Project Structure
 
+```text
+MindSense-AI/
+├── app.py
+├── logistic_model.pkl
+├── tfidf_vectorizer.pkl
+├── requirements.txt
+├── static/
+│   └── style.css
+└── templates/
+    └── index.html
+```
+
+## Note
+
+The model and vectorizer files must be present in the project folder for the app to run.
