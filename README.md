@@ -21,11 +21,13 @@ MindSense AI is a web application that uses natural language processing to class
 
 ## Getting Started
 
-### Requirements
+## How It Works
 
-Install Python, then open a terminal in the project folder.
+1. Enter text in the form and submit it.
+2. The app cleans the text and converts it into TF-IDF features.
+3. The trained model predicts a category.
+4. The app displays the prediction and its confidence score.
 
-### Installation
+The confidence score reflects the model’s output; it is not a clinical measure or diagnosis.
 
-```bash
-pip install -r requirements.txt
+
