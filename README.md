@@ -21,6 +21,15 @@ MindSense AI is a web application that uses natural language processing to class
 
 ## Getting Started
 
+### Requirements
+
+Install Python, then open a terminal in the project folder.
+
+### Installation
+
+```bash
+pip install -r requirements.txt
+
 ## How It Works
 
 1. Enter text in the form and submit it.
