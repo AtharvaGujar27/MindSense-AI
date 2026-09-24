@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6fb">
+    <title>MindSense AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="MindSense AI home">
+                <span class="brand-mark" aria-hidden="true">✳</span>
+                <span>MindSense <span class="brand-light">AI</span></span>
+            </a>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+                <span class="theme-icon" aria-hidden="true">☾</span>
+                <span class="theme-label">Dark mode</span>
+            </button>
+        </header>
+
+        <section class="hero">
+            <div class="hero-copy">
+                <span class="pill"><span class="status-dot"></span> TEXT INSIGHT</span>
+                <h1>A little more clarity,<br><span>one thought at a time.</span></h1>
+                <p class="intro">Share a thought, note, or message. MindSense AI will analyze the language with its trained text model.</p>
+            </div>
+            <div class="orb" aria-hidden="true"><span>✳</span><i></i></div>
+        </section>
+
+        <section class="workspace" aria-label="Text analysis">
+            <form method="post" id="analysis-form">
+                <div class="field-heading">
+                    <label for="text">Your text</label>
+                    <span class="field-hint">Write naturally. Your text is analyzed when you submit.</span>
+                </div>
+                <div class="input-wrap">
+                    <textarea id="text" name="text" rows="7" maxlength="2000" placeholder="What’s on your mind? Start typing here…" required>{{ user_text }}</textarea>
+                    <div class="input-footer">
+                        <span class="privacy-note"><span aria-hidden="true">✦</span> Take a moment for yourself</span>
+                        <span class="char-count" id="char-count" aria-live="polite">0 / 2000</span>
+                    </div>
+                </div>
+                <button class="analyze-button" id="analyze-button" type="submit">
+                    <span>Analyze text</span><span class="button-arrow" aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            {% if prediction is not none %}
+            <section class="result" aria-live="polite">
+                <div class="result-icon" aria-hidden="true">✦</div>
+                <div class="result-copy">
+                    <p class="result-kicker">YOUR RESULT</p>
+                    <h2>{{ prediction }}</h2>
+                    {% if confidence is not none %}
+                    <p class="confidence">Model confidence <strong>{{ confidence }}%</strong></p>
+                    {% endif %}
+                </div>
+                <div class="confidence-ring" aria-label="Confidence {{ confidence }} percent" style="--confidence: {{ confidence or 0 }}%"><span>{{ confidence or 0 }}%</span></div>
+            </section>
+            {% endif %}
+        </section>
+
+        <footer class="page-footer"><span>MindSense AI</span><span>Made for thoughtful moments</span></footer>
+    </main>
+
+    <script>
+        (() => {
+            const root = document.documentElement;
+            const toggle = document.getElementById('theme-toggle');
+            const icon = toggle.querySelector('.theme-icon');
+            const label = toggle.querySelector('.theme-label');
+            const savedTheme = localStorage.getItem('mindsense-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            function setTheme(theme) {
+                root.dataset.theme = theme;
+                const isDark = theme === 'dark';
+                icon.textContent = isDark ? '☀' : '☾';
+                label.textContent = isDark ? 'Light mode' : 'Dark mode';
+                toggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+                document.querySelector('meta[name="theme-color"]').content = isDark ? '#11131b' : '#f4f6fb';
+            }
+
+            setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+            toggle.addEventListener('click', () => {
+                const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+                setTheme(nextTheme);
+                localStorage.setItem('mindsense-theme', nextTheme);
+            });
+
+            const textarea = document.getElementById('text');
+            const counter = document.getElementById('char-count');
+            const updateCount = () => {
+                counter.textContent = `${textarea.value.length} / 2000`;
+                counter.classList.toggle('near-limit', textarea.value.length >= 1800);
+            };
+            textarea.addEventListener('input', updateCount);
+            updateCount();
+
+            document.getElementById('analysis-form').addEventListener('submit', () => {
+                const button = document.getElementById('analyze-button');
+                button.classList.add('is-loading');
+                button.querySelector('span:first-child').textContent = 'Analyzing…';
+                button.querySelector('.button-arrow').textContent = '✳';
+            });
+        })();
+    </script>
+</body>
+</html>
